@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>用户管理</title>
+
+    <!-- Bootstrap -->
+    <link href="__WEBSITE__static/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+     tr th:hover{background-color:#eff;}
+     tbody tr:hover{background-color:#eff;}
+     .left_bg{background:#eee;height:900px;}
+  </style>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+  
+  <div class="container">
+    <div class="row">
+    <!--  <div class="col-md-3 left_bg">左边一块</div> -->
+      <div class="col-md-12">
+     <!--  <div class="row">
+        <a href="{:url('user/add')}" type="button" class="btn btn-primary">上架</a>
+      </div> -->
+
+      <div class="row">
+      
+        <table class="table" style="width:100%;overflow:auto;">
+            <thead>
+              <tr>
+                <th>编号</th>
+                <th>水果名</th>
+                <th>库存</th>
+                <th>商品描述</th>
+                <th>价格</th>
+                <th>图片</th>
+                <th>是否有货</th>
+                <th>上架时间</th>
+                <th>更新时间</th>
+                <th>操作</th>
+                <!--<th>操作</th>-->
+              </tr>
+            </thead>
+            <tbody>
+            {volist name="list" id="goods"}
+              <tr>
+                <td>{$goods.gid}</td>
+                <td>{$goods.goodsname}</td>
+                <td>{$goods.stock}</td>
+                <td>{$goods.description}</td>
+                <td>{$goods.price}</td>
+                <td style="overflow:scroll;width:5px;height:10px;">{$goods.picture}</td>
+                <td>{$goods.status}</td>
+                <td>{$goods.create_time}</td>
+                <td>{$goods.update_time}</td>
+                <td><!-- <a href="{:url('goods/edit',['gid'=>$goods['gid']])}">修改</a> | --> <a href="{:url('goods/delete',['gid'=>$goods['gid']])}">下架</a></td>
+              </tr>
+            
+            {/volist}
+            </tbody>
+        </table>  
+            {$page}
+      </div>
+      </div>
+    </div>
+  
+  </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="__WEBSITE__static/js/bootstrap.min.js"></script>
+  </body>
+</html>

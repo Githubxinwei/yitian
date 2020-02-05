@@ -1,0 +1,178 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="__PUBLIC__/css/css.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/css/common.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<script src="__PUBLIC__/js/jquery.min.1.8.2.js" type="text/javascript"></script>
+<script src="__PUBLIC__/js/jquery.SuperSlide.2.1.1.js" type="text/javascript"></script>
+<script type="text/javascript" src="__PUBLIC__/js/slide.js"></script>
+<script src="__PUBLIC__/js/common_js.js" type="text/javascript"></script>
+<script src="__PUBLIC__/js/jquery.foucs.js" type="text/javascript"></script>
+<!--[if IE 7]>
+<link rel="stylesheet" href="assets/css/font-awesome-ie7.min.css">
+<![endif]-->
+<title>产品列表页</title>
+</head>
+
+<body>
+<!--顶部样式-->
+<div class="top_header">
+<em class="left_img"></em>
+<div class="header clearfix" id="header">
+<a href="#" class="logo_img"><img src="__PUBLIC__/images/logo.png" /></a>
+<div class="header_Section">
+ <div class="shortcut">
+  <ul>
+ {if !empty(session('username'))}
+  <li style="color:#999999;font-size:13px;">欢迎来到世界最大的水果商城: {$Request.session.username}
+  <!-- {if $Request.session.avater}
+  <img src="__WEBSITE__{$Request.session.avater}" style="width:38px;height:38px;border:0px;" />
+  {else}
+  <img src="__WEBSITE__static/images/face.gif" style="width:38px;height:38px;" />
+  {/if} -->
+  </li>
+  <li  class="hd_menu_tit"><em class="login_img"></em><a href="{:url('user/out')}">退出</a></li>
+  {else}
+  <li  class="hd_menu_tit"><em class="login_img"></em><a href="{:url('user/login')}">登录</a></li>
+   <li  class="hd_menu_tit"><em  class="registered_img"></em><a href="{:url('user/register')}">注册</a></li>
+   {/if}
+   <li  class="hd_menu_tit"><em class="Collect_img"></em><a href="{:url('user/collection')}">收藏夹</a></li>
+   <li  class="hd_menu_tit"><em class="cart_img"></em><a href="{:url('user/cart')}">购物车（{$Request.session.data}）</a></li>
+  </ul>
+ </div>
+ <div class="nav" id="Navigation">
+  <ul class="Navigation_name"> 
+   <li class=""><a href="{:url('index/index')}">首页</a></li>
+   <li class=""><a href="{:url('goods/allgoods')}">所有果蔬</a></li>
+   <li class=""><a href="{:url('goods/groupbuy')}">团购专区</a></li>
+   <li class=""><a href="{:url('goods/fruit')}">水果馆</a></li>
+   <li class=""><a href="{:url('goods/vagetable')}">素菜馆</a></li>
+   <li class=""><a href="{:url('user/user')}">会员中心</a></li>
+   <li class=""><a href="#">联系我们</a></li>
+  </ul>
+ </div>
+ <script>$("#Navigation").slide({titCell:".Navigation_name li"});</script>
+</div>
+</div>
+<em class="right_img"></em>
+</div>
+<!---->
+<div><a href="#"><img src="__PUBLIC__/images/AD_page_img_02.png" width="100%"/></a></div>
+<!--位置-->
+<div class="Bread_crumbs">
+ <div class="Inside_pages clearfix">
+   <div class="left">当前位置：<a href="{:url('index/index')}">首页</a>&gt;<a href="{:url('goods/fruit')}">水果馆</a></div>
+   <div class="right Search">
+   <form>
+    <input name="" type="text"  class="Search_Box"/>
+    <input name="" type="button"  name="" class="Search_btn"/>
+    </form>
+   </div>
+ </div>
+</div>
+<!--产品列表-->
+<div class="Inside_pages clearfix">
+<div class="margintop">
+ <DIV class="left_style">
+    <div class="title_img_p"style="line-height:140px;font-size:30px;padding-left:70px;color:white;">水果馆</div>
+
+   <div class="ranking">
+    <div class="ranking_title"><span>销量</span>排行</div>
+    <ul class="ranking_list">
+    {foreach $sort as $key=>$value}
+     <li class="">
+     <em class="ranking_label">{$key+1}</em>
+     <a href="{:url('goods/detailed')}?cid={$value.cid}&gid={$value.gid}" class="img"> <img src="__PUBLIC__/images/zc.jpg" width="100px" height="100px" /></a>
+     <p class="ranking_name">{$value['description']}</p>
+     <p class="price"><b>￥</b>{$value.price}</p>
+     <p><a href="{:url('goods/detailed')}?cid={$value.cid}&gid={$value.gid}">立即查看< </a></p>
+     </li>
+	 {/foreach}
+    </ul>
+   </div>
+ </DIV>
+ <DIV class="right_style">
+    <ul class="list_style">
+		{volist name="data" id="list"}
+		<li class="clearfix">
+       <div class="product_lists clearfix">
+        <a href="{:url('goods/detailed')}?cid={$list.cid}&gid={$list.gid}" class="Collect"></a>
+        <a href="{:url('goods/detailed')}?cid={$list.cid}&gid={$list.gid}"><img src="__PUBLIC__/images/za.jpeg"width=207 height=219 /></a>
+        <p class="title_p_name">{$list.goodsname}</p>
+        <p class="title_Profile">{$list.description}</p>
+        <p class="price"><b>￥</b>{$list.price}</p>
+        <p class="btn_style"><a href="{:url('goods/detailed')}?cid={$list.cid}&gid={$list.gid}" class="buy_btn"></a><a href="javascript:;" gid="{$list.gid}" class="Join_btn"></a></p>
+        </div>
+       </li>
+	   {/volist}
+    </ul>
+ </DIV>
+ </div>
+</div>
+	<script>
+		/*
+		var url = $(this).attr('href');
+		var xhr = new XMLHttpRequest();
+		xhr.open('get','url',false);
+		xhr.send(null);
+		alert('添加成功');
+		//alert(gid.value);
+		*/
+	$('.Join_btn').click(function(){
+		var gid = $(this).attr('gid');
+		$.ajax({
+				url:"__WEB_SITE__/index/user/putcart",
+				type:'get',
+				dataType:'json',
+				data:{"gid":gid},
+				success:function(data){	
+				if(data.code == 1){
+					alert('添加购物车成功');
+					}else{
+					alert('添加购物车失败');
+					}
+				}
+		});
+	})
+	</script>
+<!--底部样式-->
+<div class="footer">
+ <div class="footer_img_bg"></div>
+ <div class="footerbox">
+  <div class="footer_info">
+    <div class="footer_left">
+     <a href="#"><img src="__PUBLIC__/images/logo.png" /></a>
+     <p class="erwm">
+     <img src="__PUBLIC__/images/erweim.png"  width="80px" height="80px"/>
+     <img src="__PUBLIC__/images/erweim.png"  width="80px" height="80px"/>
+     <p>
+    </div>
+    <div class="helper_right clearfix">
+     <dl>
+      <dt><em class="guide"></em>新手指南</dt>
+      <dd><a href="#">注册新用户</a></dd>
+      <dd><a href="#">实名认证</a></dd>
+      <dd><a href="#">找回密码</a></dd>
+     </dl>
+     <dl>
+      <dt ><em class="h_about"></em>关于我们</dt>
+      <dd><a href="#">关于我们</a></dd>
+      <dd><a href="#">政策服务</a></dd>
+      <dd><a href="#">常见问题</a></dd>
+     </dl>
+     <dl>
+      <dt ><em class="h_conact"></em>联系我们</dt>
+      <dd><a href="#">联系我们</a></dd>
+      <dd><a href="#">在线客服</a></dd>
+     </dl>
+    </div>
+  </div>
+ </div> 
+ <div class=" Copyright ">
+   @2015 四川莆田特色馆版权所有 
+ </div>
+</div>
+</body>
+</html>

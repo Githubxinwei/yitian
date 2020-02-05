@@ -1,0 +1,243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="__PUBLIC__/css/css.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/css/common.css" rel="stylesheet" type="text/css" />
+<link href="__PUBLIC__/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<script src="__PUBLIC__/js/jquery.min.1.8.2.js" type="text/javascript"></script>
+<script src="__PUBLIC__/js/jquery.SuperSlide.2.1.1.js" type="text/javascript"></script>
+<script type="text/javascript" src="__PUBLIC__/js/slider.js"></script>
+<script src="__PUBLIC__/js/common_js.js" type="text/javascript"></script>
+<script src="__PUBLIC__/js/jquery.foucs.js" type="text/javascript"></script>
+<title>用户注册</title>
+</head>
+<body>
+<!--顶部样式-->
+<div class="top_header">
+<em class="left_img"></em>
+<div class="header clearfix" id="header">
+<a href="#" class="logo_img"><img src="__PUBLIC__/images/logo.png" /></a>
+<div class="header_Section">
+ <div class="shortcut">
+  <ul>
+  
+  <li style="color:#999999;font-size:13px;">欢迎来到世界最大的水果商城: {$Request.session.username}</li>
+  <li  class="hd_menu_tit"><em class="login_img"></em><a href="{:url('user/out')}">退出</a></li>
+
+  <li  class="hd_menu_tit"><em class="login_img"></em><a href="{:url('user/login')}">登录</a></li>
+   <li  class="hd_menu_tit"><em  class="registered_img"></em><a href="{:url('user/register')}">注册</a></li>
+ 
+   <li  class="hd_menu_tit"><em class="Collect_img"></em><a href="{:url('user/collection')}">收藏夹</a></li>
+   <li  class="hd_menu_tit"><em class="cart_img"></em><a href="{:url('user/cart')}">购物车（0）</a></li>
+  </ul>
+ </div>
+ <div class="nav" id="Navigation">
+  <ul class="Navigation_name"> 
+   <li class=""><a href="{:url('index/index')}">首页</a></li>
+   <li class=""><a href="{:url('goods/allgoods')}">所有果蔬</a></li>
+   <li class=""><a href="{:url('goods/groupbuy')}">团购专区</a></li>
+   <li class=""><a href="{:url('goods/fruit')}">水果馆</a></li>
+   <li class=""><a href="{:url('goods/vagetable')}">素菜馆</a></li>
+   <li class=""><a href="{:url('user/user')}">会员中心</a></li>
+   <li class=""><a href="#">联系我们</a></li>
+  </ul>
+ </div>
+ <script>$("#Navigation").slide({titCell:".Navigation_name li"});</script>
+</div>
+</div>
+<em class="right_img"></em>
+</div>
+<!---->
+<div><a href="#"><img src="__PUBLIC__/images/AD_page_img_02.png" width="100%"/></a></div>
+<!--注册样式-->
+<div class="Inside_pages clearfix">
+ <div class="register">
+     <div class="register_style">
+      <div class="u_register">
+        <ul>
+		<form action="__WEBSITE__index/user/checkregister" method="post" id="register">
+         <li><label class="name">用户名称：</label><input name="username" type="text" placeholder="请填写真实姓名" class="text_Add"/><span class="utips"></span></li>
+		  <li><label class="name">手机号码：</label><input name="tel" type="text" placeholder="请填写真实手机号" class="text_Add"/><span class="ttips"></span></li>
+         <li><label class="name">设置密码：</label><input name="password" type="password" placeholder="请填写密码" class="text_Add"><span class="ptips"></span></li>
+         <li><label class="name">确认密码：</label><input name="repassword" type="password" placeholder="请确认密码" class="text_Add"/><span class="rptips"></span></li>
+         <li><label class="name">验证码：</label><input name="code" type="text"  class="text_verification"/>{:captcha_img()}<span class="ctips"></span></li>
+		 {:token()}
+        </ul>
+         <div class="register-btn"><a href="javascript:;" class="btn_register">注册</a></div>
+		 </form>
+      </div>
+     </div>
+ </div>
+ <script>
+	$('form img').click(function(){
+	var time = new Date().getTime();
+	var src= $(this).attr("src");
+		$(this).attr("src",src+'?'+time);
+	})
+	//注册验证
+	//用户名验证
+	
+	$(":input:eq(0)").blur(function(){
+			checkuser();
+	})
+	$(":input:eq(0)").keyup(function(){
+		checkuser();
+	})
+		function checkuser(){
+			//用户名只能为2~4个汉字
+			var reg = /^[\u4E00-\u9FA5]{2,4}$/;
+			var v1 = $(":input:eq(0)").val();
+			
+
+			if(v1.length==0){
+				$(".utips").html("用户名不能为空!");
+				return false;
+			}else{
+				if(!reg.test(v1)){
+					$(".utips").html("用户名格式不正确");
+				return false;
+				}else{
+				 $.ajax({
+						url:"__WEBSITE__index/user/checkusername",
+						type:'post',
+						dataType:'json',
+						async:true,
+						data:{"username":$(":input:eq(0)").val()},
+						success:function(data){
+							if(data){
+								$(".utips").html("用户名已被注册");
+								  flag = false;
+							}else{
+
+								$(".utips").html("");
+								//在ajax回调函数中return返回退出的仅仅是回调函数本身，而并非外层的整个函数，所以造成外层函数无返回值，而返回undefined。
+								//ajax内部return true 总是 return undefined。所以将值赋给flag变量，在ajax方法外部return
+								 flag = true;
+							}
+						}
+					}); 
+				 return flag;
+					
+				}
+			}
+		}
+	//手机号码验证
+	
+	$(":input:eq(1)").blur(function(){
+			checktel();
+	})
+	$(":input:eq(1)").keyup(function(){
+			checktel();
+	})
+		function checktel(){
+			var  reg = /^1[34578]\d{9}$/;
+			var v1=$(":input:eq(1)").val();
+			if(v1.length==0){
+				$(".ttips").html("手机号不能为空!");
+				return false;
+			}else{
+				if(!reg.test(v1)){
+					$(".ttips").html("手机号格式不正确");
+				return false;
+				}else{
+					$(".ttips").html("");
+					return true;
+				}
+			}
+		}
+	//密码验证
+	$(":input:eq(2)").blur(function(){
+			checkpwd();
+	})
+	$(":input:eq(2)").keyup(function(){
+			checkpwd();
+	})
+		function checkpwd(){
+			var v1=$(":input:eq(2)").val();
+			if(v1.length==0){
+				$(".ptips").html("密码不能为空");
+				return false;
+			}else{
+				if(v1.length<6||v1.length>20){
+					$(".ptips").html("密码长度需介于6-12之间");
+				return false;
+				}else{
+					$(".ptips").html("");
+					return true;
+				}
+			}
+		}
+	//确认密码验证
+	$(":input:eq(3)").blur(function(){
+			checkrepwd();
+	})
+	$(":input:eq(3)").keyup(function(){
+			checkrepwd();
+	})
+		function checkrepwd(){
+			var v1=$(":input:eq(3)").val();
+			if(v1.length==0){
+				$(".rptips").html("密码不为空");
+				return false;
+			}else{
+				if(v1 != $(":input:eq(2)").val()){
+					$(".rptips").html("前后密码不一致");
+				return false;
+				}else{
+					$(".rptips").html("");
+					return true;
+				}
+			}
+		}
+
+	$('.btn_register').click(function(){
+			
+
+			if(checkpwd() &&  checkuser() && checkrepwd() && checktel()){
+				
+				return $('#register').submit();
+			}else{
+
+				return false;
+			}
+		})	
+ </script>
+</div>
+<!--底部样式-->
+<div class="footer">
+ <div class="footer_img_bg"></div>
+ <div class="footerbox">
+  <div class="footer_info">
+    <div class="footer_left">
+     <a href="#"><img src="__PUBLIC__/images/logo.png" /></a>
+     <p class="erwm">
+     <img src="__PUBLIC__/images/erweim.png"  width="80px" height="80px"/>
+     <img src="__PUBLIC__/images/erweim.png"  width="80px" height="80px"/>
+     <p>
+    </div>
+    <div class="helper_right clearfix">
+     <dl>
+      <dt><em class="guide"></em>新手指南</dt>
+      <dd><a href="#">注册新用户</a></dd>
+      <dd><a href="#">实名认证</a></dd>
+      <dd><a href="#">找回密码</a></dd>
+     </dl>
+     <dl>
+      <dt ><em class="h_about"></em>关于我们</dt>
+      <dd><a href="#">关于我们</a></dd>
+      <dd><a href="#">政策服务</a></dd>
+      <dd><a href="#">常见问题</a></dd>
+     </dl>
+     <dl>
+      <dt ><em class="h_conact"></em>联系我们</dt>
+      <dd><a href="#">联系我们</a></dd>
+      <dd><a href="#">在线客服</a></dd>
+     </dl>
+    </div>
+  </div>
+ </div> 
+ 
+</div>
+</body>
+</html>

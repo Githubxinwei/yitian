@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+	<head>
+	
+	</head>
+	
+	<body>
+		<form action="{:url('user/update')}" method="post">
+			用户名:&nbsp;&nbsp;<input type="text" name="username" value="{$info.username}"><br /><br />
+			密  码:&nbsp;&nbsp;	<input type="password" name="password" /><br /><br />
+			重复密码:&nbsp;<input type="password" name="repassword" /><br /><br />
+			用户积分:&nbsp;<input type="text" name="score" /><br /><br />
+			联系方式:&nbsp;<input type="text" name="tel" /><br /><br />
+			
+			<input type="hidden" name="uid" value="{$info.uid}">
+			{:token()}
+			
+			<input type="submit" value="修改" />
+		
+		</form>
+	
+	</body>
+
+
+</html>

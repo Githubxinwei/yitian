@@ -1,0 +1,27 @@
+<!doctype html>
+
+<html>
+	<head>
+	
+	</head>
+	
+	<body>
+		
+		<form action="{:url('user/create')}" method="post">
+			用户名:&nbsp;&nbsp;<input type="text" name="username" /><br /><br />
+			密  码:&nbsp;&nbsp; <input type="password" name="password" /><br /><br />
+			重复密码:&nbsp;<input type="password" name="repassword" /><br /><br />
+			联系方式:&nbsp;<input type="text" name="tel" /><br /><br />
+			
+			{:token()}
+		
+			<input type="submit" value="添加" />
+		</form>
+	
+	
+	
+	</body>
+
+
+
+</html>
